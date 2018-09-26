@@ -3,33 +3,33 @@ const app = express();
 const port = 3000;
 
 
-// GET collection of notes route
-app.get('/notes', (req, res) => {
-    res.send(`A list of notes has been retrieved!`);
+// GET collection of posts route
+app.get('/posts', (req, res) => {
+    res.send(`A list of posts has been retrieved!`);
 });
 
-// GET entity of note route
-app.get('/notes/:id', (req, res) => {
+// GET entity of post route
+app.get('/posts/:id', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been retrieved!`);
+    res.send(`Post ${id} has been retrieved!`);
 });
 
 // POST create new entity of post route
-app.post('/notes', (req, res) => {
+app.post('/posts', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been created!`);
+    res.send(`Post ${id} has been created!`);
 });
 
 // PUT update the entity of post route
-app.put('/notes/:id', (req, res) => {
+app.put('/posts/:id', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been updated`);
+    res.send(`Post ${id} has been updated`);
 });
 
 // DELETE delete the entity of post route
-app.delete('/notes/:id', (req, res) => {
+app.delete('/posts/:id', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been deleted!`);
+    res.send(`Post ${id} has been deleted!`);
 });
 
 // port listener
