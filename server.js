@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const fs = require('fs');
 
 // GET collection of posts route
 app.get('/posts', (req, res) => {
@@ -25,8 +26,19 @@ app.get('/posts/:id', (req, res) => {
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
     const id = req.params.id;
+    const posts = require("./storage/posts.json");
 
-    res.send(`Post ${id} has been created!`);
+    fs.readFile('./storage/posts.json', 'utf-8', function cb(err, data) {
+        if (err){
+            res.send(error.message);
+        } else {
+        obj = JSON.parse(data);
+        obj.push(newPost);
+        json = JSON.stringify(obj);
+        fs.writeFile('./storage/posts.json', json, 'utf8', cb);
+        res.send(`SUCCESS`);
+    }});
+    
 });
 
 // PUT update the entity of post route
