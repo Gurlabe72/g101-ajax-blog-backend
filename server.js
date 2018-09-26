@@ -2,22 +2,30 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-
 // GET collection of posts route
 app.get('/posts', (req, res) => {
-
-    res.send(`A list of posts has been retrieved!`);
+    const posts = require("./storage/posts.json");
+    res.json(posts);
 });
 
 // GET entity of post route
 app.get('/posts/:id', (req, res) => {
+    const posts = require("./storage/posts.json");
     const id = req.params.id;
-    res.send(`Post ${id} has been retrieved!`);
+
+    const post = posts.filter((post) => post.id == id)[0];
+    if (post) {
+        res.json(post)
+    } else {
+        res.send(`No post found.`)
+    }
+
 });
 
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
     const id = req.params.id;
+
     res.send(`Post ${id} has been created!`);
 });
 
