@@ -6,20 +6,27 @@ const bodyParser = require('body-parser');
 
 // GET collection of posts route
 app.get('/posts', (req, res) => {
-    res.send(`A list of notes has been retrieved!`);
+    const posts = require("./storage/posts.json");
+    res.json(posts);
 });
 
 // GET entity of post route
 app.get('/posts/:id', (req, res) => {
+    const posts = require("./storage/posts.json");
     const id = req.params.id;
-    res.send(`Note ${id} has been retrieved!`);
+    const post = posts.filter((post) => post.id == id)[0];
+    if (post) {
+        res.json(post)
+    } else {
+        res.send(`No post found.`)
+    }
 });
 
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
     const id = req.params.id;
     res.send(`Note ${id} has been created!`)
-    .then()
+    console.log('this is returning ');
 });
 
 // PUT update the entity of post route
