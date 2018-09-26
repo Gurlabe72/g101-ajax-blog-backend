@@ -5,6 +5,7 @@ const port = 3000;
 
 // GET collection of posts route
 app.get('/posts', (req, res) => {
+
     res.send(`A list of posts has been retrieved!`);
 });
 
