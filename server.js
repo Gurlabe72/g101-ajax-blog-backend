@@ -14,31 +14,33 @@ app.get('/posts', (req, res) => {
 app.get('/posts/:id', (req, res) => {
     const posts = require("./storage/posts.json");
     const id = req.params.id;
+
     const post = posts.filter((post) => post.id == id)[0];
     if (post) {
         res.json(post)
     } else {
         res.send(`No post found.`)
     }
+
 });
 
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been created!`)
-    console.log('this is returning ');
+
+    res.send(`Post ${id} has been created!`);
 });
 
 // PUT update the entity of post route
 app.put('/posts/:id', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been updated`);
+    res.send(`Post ${id} has been updated`);
 });
 
 // DELETE delete the entity of post route
 app.delete('/posts/:id', (req, res) => {
     const id = req.params.id;
-    res.send(`Note ${id} has been deleted!`);
+    res.send(`Post ${id} has been deleted!`);
 });
 
 // port listener
