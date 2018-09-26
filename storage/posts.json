@@ -5,6 +5,7 @@
         "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mollis, ante vel consectetur maximus, mi erat efficitur augue, id aliquet ipsum magna sed orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse sollicitudin dapibus nibh, in blandit risus luctus ac. Integer sollicitudin, est vitae imperdiet dignissim, libero neque porta diam, quis hendrerit augue metus in purus. Donec euismod felis ac efficitur finibus. Proin gravida elementum nisl sit amet sollicitudin. Proin ac quam imperdiet, egestas dolor in, faucibus justo. Curabitur pellentesque enim nisl, id ultrices est sagittis eget. Sed tempus blandit maximus. Maecenas eu tincidunt nunc. Nulla et congue erat, ut tincidunt lectus. Maecenas placerat placerat eros at dignissim.",
         "createdAt":"09-26-2018",
         "user":"AJ",
+        "tag":"speaker",
         "comments": [
             {
                 "id":"0",
@@ -29,6 +30,7 @@
         "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mollis, ante vel consectetur maximus, mi erat efficitur augue, id aliquet ipsum magna sed orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse sollicitudin dapibus nibh, in blandit risus luctus ac. Integer sollicitudin, est vitae imperdiet dignissim, libero neque porta diam, quis hendrerit augue metus in purus. Donec euismod felis ac efficitur finibus. Proin gravida elementum nisl sit amet sollicitudin. Proin ac quam imperdiet, egestas dolor in, faucibus justo. Curabitur pellentesque enim nisl, id ultrices est sagittis eget. Sed tempus blandit maximus. Maecenas eu tincidunt nunc. Nulla et congue erat, ut tincidunt lectus. Maecenas placerat placerat eros at dignissim.",
         "createdAt":"09-26-2018",
         "user":"Nick",
+        "tag":"conference",
         "comments": [
             {
                 "id":"0",
@@ -53,6 +55,7 @@
         "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mollis, ante vel consectetur maximus, mi erat efficitur augue, id aliquet ipsum magna sed orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse sollicitudin dapibus nibh, in blandit risus luctus ac. Integer sollicitudin, est vitae imperdiet dignissim, libero neque porta diam, quis hendrerit augue metus in purus. Donec euismod felis ac efficitur finibus. Proin gravida elementum nisl sit amet sollicitudin. Proin ac quam imperdiet, egestas dolor in, faucibus justo. Curabitur pellentesque enim nisl, id ultrices est sagittis eget. Sed tempus blandit maximus. Maecenas eu tincidunt nunc. Nulla et congue erat, ut tincidunt lectus. Maecenas placerat placerat eros at dignissim.",
         "createdAt":"09-26-2018",
         "user":"Tehreem",
+        "tag":"event",
         "comments": [
             {
                 "id":"0",
@@ -71,4 +74,3 @@
             }
         ]
     }
-]
