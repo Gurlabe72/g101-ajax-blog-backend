@@ -28,14 +28,14 @@ app.post('/posts', (req, res) => {
     const id = req.params.id;
     const posts = require("./storage/posts.json");
 
-    fs.readFile('./storage/posts.json', 'utf-8', function cb(err, data) {
+    fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data) {
         if (err){
             res.send(error.message);
         } else {
         obj = JSON.parse(data);
         obj.push(newPost);
         json = JSON.stringify(obj);
-        fs.writeFile('./storage/posts.json', json, 'utf8', cb);
+        fs.writeFile('./storage/posts.json', json, 'utf8', callback);
         res.send(`SUCCESS`);
     }});
     
