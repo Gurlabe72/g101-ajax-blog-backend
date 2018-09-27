@@ -53,6 +53,38 @@ app.delete('/posts/:id', (req, res) => {
     res.send(`Post ${id} has been deleted!`);
 });
 
+// POST add new comment inside an entity of post route
+// POST create new entity of post route
+app.post('/posts/:id/comments', (req, res) => {
+    const id = req.params.id;
+    const posts = require("./storage/posts.json");
+    const newComment= {
+        "id":"7",
+        "comment":"Dummy Comment",
+        "user":"Trump"
+    }
+    
+    fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data, id, newComment) {
+            if (err){
+                res.send(error.message);
+            } else {
+            
+            obj = JSON.parse(data);
+            let posttoEdit =[];
+            for (let i = 0; i < obj.length; i++) {
+                let post = obj[i];
+                if (post.id == id) {
+                    obj.comments.push(newComment);
+                    json = JSON.stringify(obj);
+                    fs.writeFile('./storage/posts.json', json, 'utf8', callback);
+                    res.send(`New Comment is ADDED!`);
+                }
+            }
+        }});
+});	
+    
+    
+
 // port listener
 const currentPort = () => {
     console.log(`We are live on ${port}`);
