@@ -78,6 +78,7 @@ app.post('/posts', (req, res) => {
         const posts = require("./storage/posts.json");
         const newId = posts[posts.length - 1].id + 1;
         const newPost = req.body;
+        
         newPost["id"] = newId;
         newPost["createdAt"] = getTodaysDate();
         newPost["comments"] = [];
@@ -89,9 +90,14 @@ app.post('/posts', (req, res) => {
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
 
+<<<<<<< HEAD
              res.send(`Successfully completed a post.`);
         }
     });
+=======
+            res.send(`Successfully completed a post.`);
+    }});
+>>>>>>> 47e3f3c06c73db9ce70ce049951db8fb63ba2765
 });
 
 // PUT update the entity of post route
