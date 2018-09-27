@@ -89,17 +89,8 @@ app.post('/posts', (req, res) => {
             obj = JSON.parse(data);
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
-
-<<<<<<< HEAD
-             res.send(`Successfully completed a post.`);
-        }
-    });
-=======
             res.send(`Successfully completed a post.`);
     }});
->>>>>>> 47e3f3c06c73db9ce70ce049951db8fb63ba2765
-});
-
 // PUT update the entity of post route
 
 // Put request to entity end point 
