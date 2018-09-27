@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
+var bodyParser = require('body-parser');
 const port = 3000;
 const fs = require('fs');
 
+app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
 
@@ -19,10 +21,35 @@ app.use(function (req, res, next) {
     next();
 });
 
+
+//Function to get todays date=====================================================
+
+const getTodaysDate = () => {
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1; //January is 0!
+    let yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd = '0'+dd
+    } 
+
+    if(mm<10) {
+        mm = '0'+mm
+    } 
+
+    today = mm + '-' + dd + '-' + yyyy;
+
+    return today;
+}
+
+//================================================================================
+
 app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
+
 
 // GET collection of posts route
 app.get('/posts', (req, res) => {
@@ -46,10 +73,15 @@ app.get('/posts/:id', (req, res) => {
 
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
-    const id = req.params.id;
-    const posts = require("./storage/posts.json");
-
     fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data) {
+
+        const posts = require("./storage/posts.json");
+        const newId = posts[posts.length - 1].id + 1;
+        const newPost = req.body;
+        newPost["id"] = newId;
+        newPost["createdAt"] = getTodaysDate();
+        newPost["comments"] = [];
+        
         if (err) {
             res.send(error.message);
         } else {
@@ -57,10 +89,10 @@ app.post('/posts', (req, res) => {
             obj.push(newPost);
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
-            res.send(`SUCCESS`);
-        }
-    });
 
+            res.send(`Successfully completed a post.`);
+    }});
+    });
 });
 
 // PUT update the entity of post route
