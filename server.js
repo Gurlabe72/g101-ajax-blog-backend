@@ -75,6 +75,25 @@ app.delete('/posts/:id', (req, res) => {
     }
 res.send(remainingPosts)
 })
+fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data) {
+    const posts = require("./storage/posts.json");
+    const newId = posts[posts.length - 1].id + 1;
+    const newPost = req.body;
+    
+    if (err){
+        res.send(error.message);
+    } else {
+        obj = JSON.parse(data);
+        obj['id'] = newId;
+        obj.push(newPost);
+        json = JSON.stringify(obj);
+        fs.writeFile('./storage/posts.json', json, 'utf8', callback);
+        res.send(`Successfully completed a post.`);
+}});
+
+
+
+
 
 
 // port listener
