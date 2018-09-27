@@ -64,9 +64,18 @@ app.put('/posts/:id', (req, res) => {
 
 // DELETE delete the entity of post route
 app.delete('/posts/:id', (req, res) => {
+    const posts = require("./storage/posts.json");
     const id = req.params.id;
-    res.send(`Post ${id} has been deleted!`);
-});
+    let remainingPosts =[];
+     for (let i = 0; i < posts.length; i++) {
+        let post = posts[i];
+         if (post.id !== id) {
+            remainingPosts.push(post) 
+        }
+    }
+res.send(remainingPosts)
+})
+
 
 // port listener
 const currentPort = () => {
