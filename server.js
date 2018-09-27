@@ -23,20 +23,51 @@ app.get('/posts/:id', (req, res) => {
 
 });
 
+const newData = {
+        "title":"Slack Comes To Galvanize",
+        "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mollis, ante vel consectetur maximus, mi erat efficitur augue, id aliquet ipsum magna sed orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse sollicitudin dapibus nibh, in blandit risus luctus ac. Integer sollicitudin, est vitae imperdiet dignissim, libero neque porta diam, quis hendrerit augue metus in purus. Donec euismod felis ac efficitur finibus. Proin gravida elementum nisl sit amet sollicitudin. Proin ac quam imperdiet, egestas dolor in, faucibus justo. Curabitur pellentesque enim nisl, id ultrices est sagittis eget. Sed tempus blandit maximus. Maecenas eu tincidunt nunc. Nulla et congue erat, ut tincidunt lectus. Maecenas placerat placerat eros at dignissim.",
+        "createdAt":"09-26-2018",
+        "user":"AJ",
+        "tag":"speaker",
+        "comments": [
+            {
+                "id":"0",
+                "comment":"This is cool",
+                "user":"Sein"
+            },
+            {
+                "id":"1",
+                "comment":"OMG Slack is coming",
+                "user":"Mansoor"
+            },
+            {
+                "id":"2",
+                "comment":"You're cool",
+                "user":"Masha"
+            }
+        ]
+    }
+
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
-    const id = req.params.id;
-    const posts = require("./storage/posts.json");
+    // const posts = require("./storage/posts.json");
+    // const newId = posts[posts.length - 1].id + 1;
+    // const newPost = req.body;
 
     fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data) {
+        const posts = require("./storage/posts.json");
+        const newId = posts[posts.length - 1].id + 1;
+        const newPost = req.body;
+        
         if (err){
             res.send(error.message);
         } else {
-        obj = JSON.parse(data);
-        obj.push(newPost);
-        json = JSON.stringify(obj);
-        fs.writeFile('./storage/posts.json', json, 'utf8', callback);
-        res.send(`SUCCESS`);
+            obj = JSON.parse(data);
+            obj['id'] = newId;
+            obj.push(newPost);
+            json = JSON.stringify(obj);
+            fs.writeFile('./storage/posts.json', json, 'utf8', callback);
+            res.send(`Successfully completed a post.`);
     }});
     
 });
