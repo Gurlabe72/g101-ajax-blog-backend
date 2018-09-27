@@ -3,6 +3,21 @@ const app = express();
 const port = 3000;
 const fs = require('fs');
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    //the * allows anyone to connect to this API
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+    // Pass to next layer of middleware
+    next();
+});
+
 // GET collection of posts route
 app.get('/posts', (req, res) => {
     const posts = require("./storage/posts.json");
