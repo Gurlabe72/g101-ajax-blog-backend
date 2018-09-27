@@ -78,6 +78,7 @@ app.post('/posts', (req, res) => {
         const posts = require("./storage/posts.json");
         const newId = posts[posts.length - 1].id + 1;
         const newPost = req.body;
+        console.log(newPost);
         newPost["id"] = newId;
         newPost["createdAt"] = getTodaysDate();
         newPost["comments"] = [];
@@ -92,7 +93,6 @@ app.post('/posts', (req, res) => {
 
             res.send(`Successfully completed a post.`);
     }});
-    });
 });
 
 // PUT update the entity of post route
