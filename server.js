@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const port = 3000;
 const fs = require('fs');
 
@@ -44,12 +44,6 @@ const getTodaysDate = () => {
 }
 
 //================================================================================
-
-app.use(express.urlencoded({
-    extended: true
-}));
-app.use(express.json());
-
 
 // GET collection of posts route
 app.get('/posts', (req, res) => {
