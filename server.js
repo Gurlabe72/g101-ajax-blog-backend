@@ -91,7 +91,7 @@ app.post('/posts', (req, res) => {
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
 
             res.send(`Successfully completed a post.`);
-    }});
+        };
     });
 });
 
@@ -146,6 +146,15 @@ app.delete('/posts/:id/comments/:commentId', (req, res) => {
             postUpdate.comments.splice(postUpdate.comments[i], 1);
         }
     }
+    res.send(posts);
+})
+
+app.delete('/posts/:id/tag', (req, res) => {
+    const posts = require("./storage/posts.json");
+    const postDeletionId = req.params.id;
+    let grabPost = posts.find(post => postDeletionId == post.id);
+    delete grabPost.tag;
+    console.log(grabPost);
     res.send(posts);
 })
 
