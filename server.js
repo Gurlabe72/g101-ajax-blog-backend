@@ -86,12 +86,11 @@ app.post('/posts', (req, res) => {
             res.send(error.message);
         } else {
             obj = JSON.parse(data);
-            obj.push(newPost);
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
 
-            res.send(`Successfully completed a post.`);
-    }});
+             res.send(`Successfully completed a post.`);
+        }
     });
 });
 
@@ -128,6 +127,7 @@ app.put('/posts/:id', (req, res) => {
 });
 
 // DELETE delete the entity of post route
+
 app.delete('/posts/:id', (req, res) => {
     const posts = require("./storage/posts.json");
     const id = req.params.id;
@@ -138,33 +138,18 @@ app.delete('/posts/:id', (req, res) => {
             remainingPosts.push(post) 
         }
     }
-res.send(remainingPosts)
-})
-fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data) {
-    const posts = require("./storage/posts.json");
-    const newId = posts[posts.length - 1].id + 1;
-    const newPost = req.body;
-    
-    if (err){
-        res.send(error.message);
-    } else {
-        obj = JSON.parse(data);
-        obj['id'] = newId;
-        obj.push(newPost);
-        json = JSON.stringify(obj);
-        fs.writeFile('./storage/posts.json', json, 'utf8', callback);
-        res.send(`Successfully completed a post.`);
-}});
-
-
-
-
-
+    fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {
+        // if there's an error return error message
+        if (err) {
+            return res.send(`Uh oh, failed to delete blog post ${id}`)
+        }
+        return res.send(`Successfully deleted blog post ${id}`)
+    });
+});
 
 // port listener
 const currentPort = () => {
     console.log(`We are live on ${port}`);
 };
+
 app.listen(port, currentPort);
-
-
