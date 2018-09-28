@@ -45,12 +45,6 @@ const getTodaysDate = () => {
 
 //================================================================================
 
-app.use(express.urlencoded({
-    extended: true
-}));
-app.use(express.json());
-
-
 // GET collection of posts route
 app.get('/posts', (req, res) => {
     const posts = require("./storage/posts.json");
@@ -130,15 +124,15 @@ app.put('/posts/:id', (req, res) => {
 
 // DELETE delete the entity of post route
 app.delete('/posts/:id', (req, res) => {
-    const posts = require("./storage/posts.json");	
+    const posts = require("./storage/posts.json");
     const id = req.params.id;
     let remainingPosts =[];
-     for (let i = 0; i < posts.length; i++) {	
-        let post = posts[i];	
-         if (post.id !== id) {	
-            remainingPosts.push(post) 	
-        }	
-    }	
+     for (let i = 0; i < posts.length; i++) {
+        let post = posts[i];
+         if (post.id !== id) {
+            remainingPosts.push(post)
+        }
+    }
     fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {	
         // if there's an error return error message	
         if (err) {	
