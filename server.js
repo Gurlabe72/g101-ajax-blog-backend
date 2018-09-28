@@ -205,18 +205,25 @@ app.post('/posts/:id/comments', (req, res) => {
 // PUT edit individual comment
 app.put('/posts/:id/comments/:commentId', (req, res) => {
     const posts = require("./storage/posts.json");
+    // Assign params id & commentId
     const id = req.params.id;
     const commentId = req.params.commentId;
+    // Find specific post from posts.JSON file based on provided params.id
     const post = posts.find(p => p.id === id);
+    // Assign the req.body received
     const editedComment = req.body;
     
-
+    // Iteriate through posts.JSON file to find specified post
     for (var i = 0; i < post.comments.length; i++) {
+        // Locate the specified comment in post based on params.commentId
         if (post.comments[i].id === commentId) {
+            // Reassign key/value since req.body doesn't have one
             editedComment.id = commentId;
+            // replace the post with old comment
             post.comments[i] = editedComment;
         }
     }
+    // Overwrite the old data inside posts.JSON
     fs.writeFile('./storage/posts.json', JSON.stringify(post), 'utf8', (err) => {
         // Return error if the file cannot be overwritten
         if (err) {
