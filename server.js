@@ -130,8 +130,22 @@ app.put('/posts/:id', (req, res) => {
 
 // DELETE delete the entity of post route
 app.delete('/posts/:id', (req, res) => {
+    const posts = require("./storage/posts.json");	
     const id = req.params.id;
-    res.send(`Post ${id} has been deleted!`);
+    let remainingPosts =[];
+     for (let i = 0; i < posts.length; i++) {	
+        let post = posts[i];	
+         if (post.id !== id) {	
+            remainingPosts.push(post) 	
+        }	
+    }	
+    fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {	
+        // if there's an error return error message	
+        if (err) {	
+            return res.send(`Uh oh, failed to delete blog post ${id}`)	
+        }	
+        return res.send(`Successfully deleted blog post ${id}`)	
+    });
 });
 
 app.delete('/posts/:id/comments/:commentId', (req, res) => {
