@@ -134,11 +134,11 @@ app.delete('/posts/:id', (req, res) => {
         }
     }
     fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {	
-        // if there's an error return error message	
-        if (err) {	
-            return res.send(`Uh oh, failed to delete blog post ${id}`)	
-        }	
-        return res.send(`Successfully deleted blog post ${id}`)	
+        // if there's an error return error message
+        if (err) {
+            return res.send(`Uh oh, failed to delete blog post ${id}`)
+        }
+        return res.send(`Successfully deleted blog post ${id}`)
     });
 });
 
