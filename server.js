@@ -84,6 +84,9 @@ app.post('/posts', (req, res) => {
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
             res.send(`Successfully completed a post.`);
+        };
+    });
+});
     }});
 
 // PUT update the entity of post route
@@ -155,6 +158,16 @@ app.delete('/posts/:id/comments/:commentId', (req, res) => {
     res.send(posts);
 })
 
+app.delete('/posts/:id/tag', (req, res) => {
+    const posts = require("./storage/posts.json");
+    const postDeletionId = req.params.id;
+    let grabPost = posts.find(post => postDeletionId == post.id);
+    delete grabPost.tag;
+    console.log(grabPost);
+    res.send(posts);
+})
+
+
 // POST add new comment inside an entity of post route
 app.post('/posts/:id/comments', (req, res) => {
     // validate if the user/comment field is empty from the req
@@ -189,7 +202,6 @@ app.post('/posts/:id/comments', (req, res) => {
     });
 
 });	
-
 // port listener
 const currentPort = () => {
     console.log(`We are live on ${port}`);
