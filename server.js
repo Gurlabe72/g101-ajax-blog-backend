@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const port = 3000;
 const fs = require('fs');
 
@@ -45,12 +45,6 @@ const getTodaysDate = () => {
 
 //================================================================================
 
-app.use(express.urlencoded({
-    extended: true
-}));
-app.use(express.json());
-
-
 // GET collection of posts route
 app.get('/posts', (req, res) => {
     const posts = require("./storage/posts.json");
@@ -78,6 +72,7 @@ app.post('/posts', (req, res) => {
         const posts = require("./storage/posts.json");
         const newId = posts[posts.length - 1].id + 1;
         const newPost = req.body;
+        
         newPost["id"] = newId;
         newPost["createdAt"] = getTodaysDate();
         newPost["comments"] = [];
@@ -86,13 +81,10 @@ app.post('/posts', (req, res) => {
             res.send(error.message);
         } else {
             obj = JSON.parse(data);
-            obj.push(newPost);
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
-
             res.send(`Successfully completed a post.`);
     }});
-})
 
 // PUT update the entity of post route
 
@@ -127,31 +119,53 @@ app.put('/posts/:id', (req, res) => {
 });
 
 // DELETE delete the entity of post route
+
 app.delete('/posts/:id', (req, res) => {
+    const posts = require("./storage/posts.json");
     const id = req.params.id;
-    res.send(`Post ${id} has been deleted!`);
+    let remainingPosts =[];
+     for (let i = 0; i < posts.length; i++) {
+        let post = posts[i];
+         if (post.id !== id) {
+            remainingPosts.push(post) 
+        }
+    }
+    fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {
+        // if there's an error return error message
+        if (err) {
+            return res.send(`Uh oh, failed to delete blog post ${id}`)
+        }
+        return res.send(`Successfully deleted blog post ${id}`)
+    });
 });
 
 // POST add new comment inside an entity of post route
-// POST create new entity of post route
 app.post('/posts/:id/comments', (req, res) => {
+    // validate if the user/comment field is empty from the req
     if (!req.body.user || !req.body.comment){
         return res.send(`username and/or comment cannot be empty`);
     };
     const id = req.params.id;
     const posts = require("./storage/posts.json"); 
+    // Find specific post with provided id from the posts.json file
     const post = posts.find(p => p.id === id);
     const comment = req.body
+    // Assign id to the new comment with increment numbering based on the last index of the array
     const newId = +post.comments[post.comments.length - 1].id + 1;
+    // assign new comment's id with the generated id
     comment.id = newId;
+    // Push the new comment inside the specific post retrieved
     post.comments.push(comment);
 
+    // Iteriate through posts.json file & replace matching post with post containing new comment
     for (let i = 0; i < posts.length; i++) {
         if (posts[i].id=== post.id){
             posts[i] = post
         }
     }
+    // Overwrite the posts.json file with updated collection of posts
     fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
+        // Return error if the file cannot be overwritten
         if (err) {
             return res.send(`Unable to add comment to post ${id}!`);
         }
