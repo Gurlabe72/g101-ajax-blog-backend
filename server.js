@@ -91,6 +91,9 @@ app.post('/posts', (req, res) => {
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
 
             res.send(`Successfully completed a post.`);
+        };
+    });
+});
     }});
 })
 
@@ -132,6 +135,31 @@ app.delete('/posts/:id', (req, res) => {
     res.send(`Post ${id} has been deleted!`);
 });
 
+app.delete('/posts/:id/comments/:commentId', (req, res) => {
+    const posts = require("./storage/posts.json");
+    const deletionId = req.params.commentId;
+    let postdeletionId = req.params.id;
+    let commentIdToDelete = posts[postdeletionId].comments[deletionId].id;
+    //select the object's id that matches the deletion id
+    let postUpdate = posts.find(post => postdeletionId === post.id);
+    //loop through the selected object's comments
+    for (var i = 0; i < postUpdate.comments.length; i++) {
+        if (postUpdate.comments[i].id === commentIdToDelete) {
+            postUpdate.comments.splice(postUpdate.comments[i], 1);
+        }
+    }
+    res.send(posts);
+})
+
+app.delete('/posts/:id/tag', (req, res) => {
+    const posts = require("./storage/posts.json");
+    const postDeletionId = req.params.id;
+    let grabPost = posts.find(post => postDeletionId == post.id);
+    delete grabPost.tag;
+    console.log(grabPost);
+    res.send(posts);
+})
+
 // POST add new comment inside an entity of post route
 // POST create new entity of post route
 app.post('/posts/:id/comments', (req, res) => {
@@ -159,7 +187,6 @@ app.post('/posts/:id/comments', (req, res) => {
     });
 
 });	
-
 // port listener
 const currentPort = () => {
     console.log(`We are live on ${port}`);
