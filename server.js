@@ -181,7 +181,6 @@ app.post('/posts/:id/comments', (req, res) => {
     }
     fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
         if (err) {
-            console.error(err.messasge)
             return res.send(`Unable to add comment to post ${id}!`);
         }
         return res.send(`Your comment has been added to post ${id}!`)
