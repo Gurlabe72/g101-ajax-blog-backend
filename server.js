@@ -163,23 +163,30 @@ app.delete('/posts/:id/tag', (req, res) => {
 // POST add new comment inside an entity of post route
 // POST create new entity of post route
 app.post('/posts/:id/comments', (req, res) => {
+    // validate if the user/comment field is empty from the req
     if (!req.body.user || !req.body.comment){
         return res.send(`username and/or comment cannot be empty`);
     };
     const id = req.params.id;
-    const posts = require("./storage/posts.json"); 
+    const posts = require("./storage/posts.json");
+    // Find specific post with provided id from the posts.json file
     const post = posts.find(p => p.id === id);
     const comment = req.body
+    // Assign id to the new comment with increment numbering based on the last index of the array
     const newId = +post.comments[post.comments.length - 1].id + 1;
+     // assign new comment's id with the generated id
     comment.id = newId;
+    // Push the new comment inside the specific post retrieved
     post.comments.push(comment);
-
+    // Iteriate through posts.json file & replace matching post with post containing new comment
     for (let i = 0; i < posts.length; i++) {
         if (posts[i].id=== post.id){
             posts[i] = post
         }
     }
+    // Overwrite the posts.json file with updated collection of posts
     fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
+        // Return error if the file cannot be overwritten
         if (err) {
             return res.send(`Unable to add comment to post ${id}!`);
         }
