@@ -87,7 +87,6 @@ app.post('/posts', (req, res) => {
         };
     });
 });
-    }});
 
 // PUT update the entity of post route
 
@@ -202,6 +201,31 @@ app.post('/posts/:id/comments', (req, res) => {
     });
 
 });	
+
+// PUT edit individual comment
+app.put('/posts/:id/comments/:commentId', (req, res) => {
+    const posts = require("./storage/posts.json");
+    const id = req.params.id;
+    const commentId = req.params.commentId;
+    const post = posts.find(p => p.id === id);
+    const editedComment = req.body;
+    
+
+    for (var i = 0; i < post.comments.length; i++) {
+        if (post.comments[i].id === commentId) {
+            editedComment.id = commentId;
+            post.comments[i] = editedComment;
+        }
+    }
+    fs.writeFile('./storage/posts.json', JSON.stringify(post), 'utf8', (err) => {
+        // Return error if the file cannot be overwritten
+        if (err) {
+            return res.send(`Unable to edit comment to post ${id}!`);
+        }
+        return res.send(`Your comment has been edited to post ${id}!`)
+    });
+});
+
 // port listener
 const currentPort = () => {
     console.log(`We are live on ${port}`);
