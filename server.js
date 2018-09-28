@@ -72,7 +72,6 @@ app.post('/posts', (req, res) => {
         const posts = require("./storage/posts.json");
         const newId = posts[posts.length - 1].id + 1;
         const newPost = req.body;
-        
         newPost["id"] = newId;
         newPost["createdAt"] = getTodaysDate();
         newPost["comments"] = [];
@@ -81,8 +80,10 @@ app.post('/posts', (req, res) => {
             res.send(error.message);
         } else {
             obj = JSON.parse(data);
+            obj.push(newPost);
             json = JSON.stringify(obj);
             fs.writeFile('./storage/posts.json', json, 'utf8', callback);
+
             res.send(`Successfully completed a post.`);
         };
     });
@@ -121,7 +122,6 @@ app.put('/posts/:id', (req, res) => {
 });
 
 // DELETE delete the entity of post route
-
 app.delete('/posts/:id', (req, res) => {
     const posts = require("./storage/posts.json");
     const id = req.params.id;
@@ -129,10 +129,10 @@ app.delete('/posts/:id', (req, res) => {
      for (let i = 0; i < posts.length; i++) {
         let post = posts[i];
          if (post.id !== id) {
-            remainingPosts.push(post) 
+            remainingPosts.push(post)
         }
     }
-    fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {
+    fs.writeFile('./storage/posts.json', JSON.stringify(remainingPosts), 'utf-8', function (err) {	
         // if there's an error return error message
         if (err) {
             return res.send(`Uh oh, failed to delete blog post ${id}`)
@@ -205,13 +205,14 @@ app.delete('/posts/:id/tag', (req, res) => {
 
 
 // POST add new comment inside an entity of post route
+// POST create new entity of post route
 app.post('/posts/:id/comments', (req, res) => {
     // validate if the user/comment field is empty from the req
     if (!req.body.user || !req.body.comment){
         return res.send(`username and/or comment cannot be empty`);
     };
     const id = req.params.id;
-    const posts = require("./storage/posts.json"); 
+    const posts = require("./storage/posts.json");
     // Find specific post with provided id from the posts.json file
     const post = posts.find(p => p.id === id);
     const comment = req.body
@@ -221,7 +222,6 @@ app.post('/posts/:id/comments', (req, res) => {
     comment.id = newId;
     // Push the new comment inside the specific post retrieved
     post.comments.push(comment);
-
     // Iteriate through posts.json file & replace matching post with post containing new comment
     for (let i = 0; i < posts.length; i++) {
         if (posts[i].id=== post.id){
@@ -242,5 +242,4 @@ app.post('/posts/:id/comments', (req, res) => {
 const currentPort = () => {
     console.log(`We are live on ${port}`);
 };
-
 app.listen(port, currentPort);
