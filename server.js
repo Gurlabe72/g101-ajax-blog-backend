@@ -167,6 +167,7 @@ app.delete('/posts/:id/tag', (req, res) => {
     res.send(posts);
 })
 
+
 // POST add new comment inside an entity of post route
 app.post('/posts/:id/comments', (req, res) => {
     // validate if the user/comment field is empty from the req
