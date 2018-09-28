@@ -142,27 +142,56 @@ app.delete('/posts/:id', (req, res) => {
 });
 
 app.delete('/posts/:id/comments/:commentId', (req, res) => {
+    // Bringing in the JSON file to work with and assigning
+    // it to the variable post
     const posts = require("./storage/posts.json");
-    const deletionId = req.params.commentId;
-    let postdeletionId = req.params.id;
-    let commentIdToDelete = posts[postdeletionId].comments[deletionId].id;
-    //select the object's id that matches the deletion id
-    let postUpdate = posts.find(post => postdeletionId === post.id);
-    //loop through the selected object's comments
-    for (var i = 0; i < postUpdate.comments.length; i++) {
-        if (postUpdate.comments[i].id === commentIdToDelete) {
-            postUpdate.comments.splice(i, 1);
+    // URL params of post the comment belongs to
+    const postIdCommentBelongsTo = req.params.id;
+    //URL param for comment to delete
+    const commentIdToDelete = req.params.commentId;
+ 
+    //loops through posts to find the post with matching ID
+    // from the url param
+    let post = posts.find(
+        post => postIdCommentBelongsTo === post.id
+    );
+
+    /**
+     * THIS IS THE UPDATE HAPPENING
+     */
+    //loop through post's comments to find comment to delete
+    // by the url param provided
+    for (var i = 0; i < post.comments.length; i++) {
+        // if comment id matches the comment id to delete
+        if (post.comments[i].id === commentIdToDelete) {
+            // removes the comment if match is found
+            post.comments.splice(i, 1);
         }
     }
+
+    /**
+     * FINDS MATCHING POST TO REPLACE WITH UPDATED POST
+     */
+    // loops through original posts to find the post that 
+    // needs to be updated
+    for (var i = 0 ; i < posts.length; i++) {
+        // if match is found
+        if (posts[i].id === postIdCommentBelongsTo) {
+            // replace existing post with updated post
+            // (the post is updated with comment removed)
+            posts[i] = post;
+        }
+    }
+
+    //overwrite the file
         // Overwrite the posts.comments.id.json file with updated collection of posts
         fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
             // Return error if the file cannot be overwritten
             if (err) {
-                return res.send(`Unable to delete comment to post ${id}!`);
+                return res.send(`Unable to delete comment to post!`);
             }
-            (`Your comment has been deleted !`)
+            return res.send(`Your comment has been deleted!`)
         });
-    return res.send(posts);
 })
 
 app.delete('/posts/:id/tag', (req, res) => {
