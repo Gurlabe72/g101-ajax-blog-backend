@@ -87,7 +87,6 @@ app.post('/posts', (req, res) => {
         };
     });
 });
-    }});
 
 // PUT update the entity of post route
 
@@ -152,10 +151,18 @@ app.delete('/posts/:id/comments/:commentId', (req, res) => {
     //loop through the selected object's comments
     for (var i = 0; i < postUpdate.comments.length; i++) {
         if (postUpdate.comments[i].id === commentIdToDelete) {
-            postUpdate.comments.splice(postUpdate.comments[i], 1);
+            postUpdate.comments.splice(i, 1);
         }
     }
-    res.send(posts);
+        // Overwrite the posts.comments.id.json file with updated collection of posts
+        fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
+            // Return error if the file cannot be overwritten
+            if (err) {
+                return res.send(`Unable to delete comment to post ${id}!`);
+            }
+            (`Your comment has been deleted !`)
+        });
+    return res.send(posts);
 })
 
 app.delete('/posts/:id/tag', (req, res) => {
