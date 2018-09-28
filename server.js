@@ -174,7 +174,7 @@ app.post('/posts/:id/comments', (req, res) => {
     const comment = req.body
     // Assign id to the new comment with increment numbering based on the last index of the array
     const newId = +post.comments[post.comments.length - 1].id + 1;
-     // assign new comment's id with the generated id
+    // assign new comment's id with the generated id
     comment.id = newId;
     // Push the new comment inside the specific post retrieved
     post.comments.push(comment);
