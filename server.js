@@ -92,8 +92,7 @@ app.post('/posts', (req, res) => {
 
             res.send(`Successfully completed a post.`);
     }});
-    });
-});
+})
 
 // PUT update the entity of post route
 
@@ -136,39 +135,33 @@ app.delete('/posts/:id', (req, res) => {
 // POST add new comment inside an entity of post route
 // POST create new entity of post route
 app.post('/posts/:id/comments', (req, res) => {
+    if (!req.body.user || !req.body.comment){
+        return res.send(`username and/or comment cannot be empty`);
+    };
     const id = req.params.id;
-    const posts = require("./storage/posts.json");
-    const newComment= {
-        "id":"7",
-        "comment":"Dummy Comment",
-        "user":"Trump"
+    const posts = require("./storage/posts.json"); 
+    const post = posts.find(p => p.id === id);
+    const comment = req.body
+    const newId = +post.comments[post.comments.length - 1].id + 1;
+    comment.id = newId;
+    post.comments.push(comment);
+
+    for (let i = 0; i < posts.length; i++) {
+        if (posts[i].id=== post.id){
+            posts[i] = post
+        }
     }
-    
-    fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data, id, newComment) {
-            if (err){
-                res.send(error.message);
-            } else {
-            
-            obj = JSON.parse(data);
-            let posttoEdit =[];
-            for (let i = 0; i < obj.length; i++) {
-                let post = obj[i];
-                if (post.id == id) {
-                    obj.comments.push(newComment);
-                    json = JSON.stringify(obj);
-                    fs.writeFile('./storage/posts.json', json, 'utf8', callback);
-                    res.send(`New Comment is ADDED!`);
-                }
-            }
-        }});
+    fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
+        if (err) {
+            return res.send(`Unable to add comment to post ${id}!`);
+        }
+        return res.send(`Your comment has been added to post ${id}!`)
+    });
+
 });	
-    
-    
 
 // port listener
 const currentPort = () => {
     console.log(`We are live on ${port}`);
 };
 app.listen(port, currentPort);
-
-
