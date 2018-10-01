@@ -198,7 +198,6 @@ app.delete('/posts/:id/tag', (req, res) => {
     const postDeletionId = req.params.id;
     let grabPost = posts.find(post => postDeletionId == post.id);
     delete grabPost.tag;
-    console.log(grabPost);
     res.send(posts);
 })
 
