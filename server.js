@@ -67,26 +67,24 @@ app.get('/posts/:id', (req, res) => {
 
 // POST create new entity of post route
 app.post('/posts', (req, res) => {
-    fs.readFile('./storage/posts.json', 'utf-8', function callback(err, data) {
-
         const posts = require("./storage/posts.json");
-        const newId = posts[posts.length - 1].id + 1;
+        const newId = +posts[posts.length - 1].id + 1;
         const newPost = req.body;
-        newPost["id"] = newId;
+        newPost["id"] = `${newId}`;
         newPost["createdAt"] = getTodaysDate();
         newPost["comments"] = [];
-        
-        if (err) {
-            res.send(error.message);
-        } else {
-            obj = JSON.parse(data);
-            obj.push(newPost);
-            json = JSON.stringify(obj);
-            fs.writeFile('./storage/posts.json', json, 'utf8', callback);
+            
+           
+            posts.push(newPost);
+            fs.writeFile('./storage/posts.json', JSON.stringify(posts), 'utf8', (err) => {
+                if (err) {
+                    res.send("failed to post");
+                } else {
+                    res.send(newPost);
+                }
+            });
 
-            res.send(`Successfully completed a post.`);
-        };
-    });
+            
 });
 
 
@@ -152,7 +150,7 @@ app.delete('/posts/:id/comments/:commentId', (req, res) => {
     //loop through the selected object's comments
     for (var i = 0; i < postUpdate.comments.length; i++) {
         if (postUpdate.comments[i].id === commentIdToDelete) {
-            postUpdate.comments.splice(postUpdate.comments[i], 1);
+            postUpdate.comments.splice(i, 1);
         }
     }
     res.send(posts);
@@ -183,7 +181,7 @@ app.post('/posts/:id/comments', (req, res) => {
     // Assign id to the new comment with increment numbering based on the last index of the array
     const newId = +post.comments[post.comments.length - 1].id + 1;
     // assign new comment's id with the generated id
-    comment.id = newId;
+    comment.id = `${newId}`;
     // Push the new comment inside the specific post retrieved
     post.comments.push(comment);
     // Iteriate through posts.json file & replace matching post with post containing new comment
